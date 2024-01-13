@@ -1,6 +1,6 @@
 ---
 title: PhotoMaker
-emoji: 📚
+emoji: 📷 
 colorFrom: red
 colorTo: gray
 sdk: gradio

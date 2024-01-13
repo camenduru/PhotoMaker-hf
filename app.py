@@ -15,7 +15,8 @@ from style_template import styles
 
 # global variable
 base_model_path = 'SG161222/RealVisXL_V3.0'
-device = "cuda"
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_SEED = np.iinfo(np.int32).max
 STYLE_NAMES = list(styles.keys())
 DEFAULT_STYLE_NAME = "Photographic (Default)"
