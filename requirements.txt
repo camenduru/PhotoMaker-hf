@@ -7,4 +7,4 @@ onnxruntime-gpu
 spaces==0.19.4
 omegaconf
 peft
-huggingface-hub
+huggingface-hub==0.20.2
