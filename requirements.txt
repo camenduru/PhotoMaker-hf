@@ -1,0 +1,10 @@
+diffusers==0.25.0
+transformers==4.34.1
+accelerate
+safetensors
+einops
+onnxruntime-gpu
+spaces==0.19.4
+omegaconf
+peft
+huggingface-hub
