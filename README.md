@@ -2,7 +2,7 @@
 title: PhotoMaker
 emoji: 📷 
 colorFrom: blue
-colorTo: red
+colorTo: purple
 sdk: gradio
 sdk_version: 4.14.0
 app_file: app.py
