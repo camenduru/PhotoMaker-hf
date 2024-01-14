@@ -4,7 +4,7 @@ import random
 import os
 
 from diffusers.utils import load_image
-from diffusers import DDIMScheduler
+from diffusers import EulerAncestralDiscreteScheduler
 
 from huggingface_hub import hf_hub_download
 import spaces
@@ -15,7 +15,6 @@ from style_template import styles
 
 # global variable
 base_model_path = 'SG161222/RealVisXL_V3.0'
-
 device = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_SEED = np.iinfo(np.int32).max
 STYLE_NAMES = list(styles.keys())
@@ -130,10 +129,14 @@ def get_example():
 logo = r"""
 <center><img src='https://photo-maker.github.io/assets/logo.png' alt='PhotoMaker logo' style="width:80px; margin-bottom:10px"></center>
 """
-title = r"""<h1 align="center">PhotoMaker: Customizing Realistic Human Photos via Stacked ID Embedding</h1>"""
+title = r"""
+<h1 align="center">PhotoMaker: Customizing Realistic Human Photos via Stacked ID Embedding</h1>
+"""
 
 description = r"""
 <b>Official 🤗 Gradio demo</b> for <a href='https://github.com/TencentARC/PhotoMaker' target='_blank'><b>PhotoMaker: Customizing Realistic Human Photos via Stacked ID Embedding</b></a>.<br>
+<br>
+For stylization, you could use our other gradio demo [PhotoMaker-Style](https://huggingface.co/spaces/TencentARC/PhotoMaker-Style).
 <br>
 ❗️❗️❗️[<b>Important</b>] Personalization steps:<br>
 1️⃣ Upload images of someone you want to customize. One image is ok, but more is better.  Although we do not perform face detection, the face in the uploaded image should <b>occupy the majority of the image</b>.<br>
@@ -160,6 +163,8 @@ If our work is useful for your research, please consider citing:
 }
 ```
 📋 **License**
+<br>
+Apache-2.0 LICENSE. Please refer to the [LICENSE file](https://huggingface.co/TencentARC/PhotoMaker/blob/main/LICENSE) for details.
 
 📧 **Contact**
 <br>
@@ -169,7 +174,7 @@ If you have any questions, please feel free to reach me out at <b>zhenli1031@gma
 tips = r"""
 ### Usage tips of PhotoMaker
 1. Upload more photos of the person to be customized to **improve ID fidelty**. If the input is Asian face(s), maybe consider adding 'asian' before the class word, e.g., `asian woman img`
-2. When stylizing, does the generated face look too realistic? Try switching to our **other gradio demo** [PhotoMaker-Style](). Adjust the **Style strength** to 30-50, the larger the number, the less ID fidelty, but the stylization ability will be better.
+2. When stylizing, does the generated face look too realistic? Try switching to our **other gradio demo** [PhotoMaker-Style](https://huggingface.co/spaces/TencentARC/PhotoMaker-Style). Adjust the **Style strength** to 30-50, the larger the number, the less ID fidelty, but the stylization ability will be better.
 3. For **faster** speed, reduce the number of generated images and sampling steps. However, please note that reducing the sampling steps may compromise the ID fidelity.
 """
 # We have provided some generate examples and comparisons at: [this website]().
@@ -198,7 +203,7 @@ with gr.Blocks(css=css) as demo:
             with gr.Column(visible=False) as clear_button:
                 remove_and_reupload = gr.ClearButton(value="Remove and upload new ones", components=files, size="sm")
             prompt = gr.Textbox(label="Prompt",
-                       info="Try something like 'a photo of a man/woman img' instead of 'A photo of a man/woman'",
+                       info="Try something like 'a photo of a man/woman img', 'img' is the trigger word.",
                        placeholder="A photo of a [man/woman img]...")
             style = gr.Dropdown(label="Style template", choices=STYLE_NAMES, value=DEFAULT_STYLE_NAME)
             submit = gr.Button("Submit")
@@ -228,7 +233,7 @@ with gr.Blocks(css=css) as demo:
                     minimum=1,
                     maximum=4,
                     step=1,
-                    value=4,
+                    value=2,
                 )
                 guidance_scale = gr.Slider(
                     label="Guidance scale",
