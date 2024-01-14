@@ -4,7 +4,7 @@ import random
 import os
 
 from diffusers.utils import load_image
-from diffusers import EulerAncestralDiscreteScheduler
+from diffusers import DDIMScheduler
 
 from huggingface_hub import hf_hub_download
 import spaces
