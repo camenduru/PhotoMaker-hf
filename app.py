@@ -36,12 +36,13 @@ pipe.load_photomaker_adapter(
     weight_name=os.path.basename(photomaker_ckpt),
     trigger_word="img"
 )     
+pipe.id_encoder.to(device)
 
 pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config)
 # pipe.set_adapters(["photomaker"], adapter_weights=[1.0])
 pipe.fuse_lora()
 
-@spaces.GPU(enable_queue=True)
+@spaces.GPU
 def generate_image(upload_images, prompt, negative_prompt, style_name, num_steps, style_strength_ratio, num_outputs, guidance_scale, seed, progress=gr.Progress(track_tqdm=True)):
     # check the trigger word
     image_token_id = pipe.tokenizer.convert_tokens_to_ids(pipe.trigger_word)
