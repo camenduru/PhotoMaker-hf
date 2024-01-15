@@ -283,4 +283,4 @@ with gr.Blocks(css=css) as demo:
     
     gr.Markdown(article)
     
-demo.launch()
+demo.queue().launch(share=True)
