@@ -7,7 +7,6 @@ from diffusers.utils import load_image
 from diffusers import DDIMScheduler
 
 from huggingface_hub import hf_hub_download
-import spaces
 import gradio as gr
 
 from pipeline import PhotoMakerStableDiffusionXLPipeline
@@ -42,7 +41,6 @@ pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config)
 # pipe.set_adapters(["photomaker"], adapter_weights=[1.0])
 pipe.fuse_lora()
 
-@spaces.GPU
 def generate_image(upload_images, prompt, negative_prompt, style_name, num_steps, style_strength_ratio, num_outputs, guidance_scale, seed, progress=gr.Progress(track_tqdm=True)):
     # check the trigger word
     image_token_id = pipe.tokenizer.convert_tokens_to_ids(pipe.trigger_word)
