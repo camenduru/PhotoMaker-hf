@@ -110,7 +110,7 @@ class PhotoMakerStableDiffusionXLPipeline(StableDiffusionXLPipeline):
         # load finetuned CLIP image encoder and fuse module here if it has not been registered to the pipeline yet
         print(f"Loading PhotoMaker components [1] id_encoder from [{pretrained_model_name_or_path_or_dict}]...")
         id_encoder = PhotoMakerIDEncoder()
-        id_encoder.load_state_dict(state_dict["id_encoder"], strict=True)
+        id_encoder.load_state_dict(state_dict["id_encoder"], strict=False)
         id_encoder = id_encoder.to(self.device, dtype=self.unet.dtype)    
         self.id_encoder = id_encoder
         self.id_image_processor = CLIPImageProcessor()
